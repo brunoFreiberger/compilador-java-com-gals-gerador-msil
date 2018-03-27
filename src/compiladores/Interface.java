@@ -5,6 +5,10 @@
  */
 package compiladores;
 
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,6 +40,29 @@ public class Interface extends javax.swing.JFrame {
         this.loadTextAreaEdit();
         this.labelFile.setText("New file");
         this.labelStatus.setText("Not modified");
+        this.initKeyboardDetect();
+    }
+    
+    public void initKeyboardDetect(){
+        KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(final KeyEvent e) {
+                if(e.getID() == KeyEvent.KEY_PRESSED){
+                    if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+                        saveFile();
+                    } else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_O) {
+                        openFile();
+                    } else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
+                        newFile();
+                    } else if(e.getKeyCode() == KeyEvent.VK_F1) {
+                        showMessageInfo();
+                    }
+                }
+                return false;
+            }
+        };
+        
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
     }
     
     public void loadTextAreaEdit() {
@@ -56,6 +83,83 @@ public class Interface extends javax.swing.JFrame {
                 labelStatus.setText("Modified");
             }
         });
+    }
+    
+    private void openFile() {
+        JFileChooser jfcfile = new JFileChooser(lastPath); 
+        int selectedOpt = jfcfile.showOpenDialog(null);
+        
+        if(selectedOpt == JFileChooser.APPROVE_OPTION){
+            File file = jfcfile.getSelectedFile();
+            if(file.exists()){
+                textareaMessages.setText("");
+                textareaEditor.setText("");
+                labelFile.setText(file.getAbsolutePath());
+                lastPath = file.getAbsolutePath();
+                currentFile = file;
+                try {
+                    BufferedReader bfr = new BufferedReader(new FileReader(file));
+                    String line = bfr.readLine(); 
+                    while (line != null){
+                          textareaEditor.append(line + "\n");
+                          line = bfr.readLine();
+                     }
+                  labelStatus.setText("Not modified");  
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "File not found");
+            }
+        }
+       textareaEditor.requestFocus(); 
+    }
+    
+    private void newFile() {
+        currentFile = null;
+        textareaEditor.setText("");
+        textareaMessages.setText("");
+        textareaEditor.requestFocus();
+        labelFile.setText("New file");
+        labelStatus.setText("Not modified");
+    }
+    
+    private void saveFile() {
+        JFileChooser JFCFile = new JFileChooser(lastPath);
+        if(currentFile != null){
+            JFCFile.setSelectedFile(currentFile);
+        }
+        if(JFCFile.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+            File file = JFCFile.getSelectedFile();
+            boolean wantSave = true;
+            if(file.exists() && currentFile == null){
+                wantSave = JOptionPane.showConfirmDialog(null, "File already exists, want to replace?") == JOptionPane.OK_OPTION;
+            }
+            if(wantSave){
+                try {
+                   String lineSeparator = System.getProperty("line.separator");
+                   BufferedWriter bfw = new BufferedWriter(new FileWriter(file));
+                   String content [] = textareaEditor.getText().split("\n");
+                   for(int i = 0; i < content.length; i++) {
+                          bfw.write(content[i] + lineSeparator); 
+                   }
+                   currentFile = file;
+                   lastPath = file.getAbsolutePath();
+                   labelFile.setText(lastPath);
+                   labelStatus.setText("Not modified");
+                   bfw.close();
+               } catch (IOException ex) {
+                   Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+               }   
+            }
+        }
+    }
+    
+    private void showMessageInfo() {
+        textareaMessages.setText("");
+        textareaMessages.setText("Aluno: Bruno Henrique Freiberger");
     }
 
     /**
@@ -92,7 +196,7 @@ public class Interface extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(32767, 32767));
         setMinimumSize(new java.awt.Dimension(900, 620));
         setPreferredSize(new java.awt.Dimension(900, 620));
-        setSize(new java.awt.Dimension(900, 620));
+        setSize(new java.awt.Dimension(900, 640));
 
         panelButton.setMinimumSize(new java.awt.Dimension(145, 590));
         panelButton.setPreferredSize(new java.awt.Dimension(145, 590));
@@ -191,15 +295,15 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(btnCompile, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnAbout, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 155, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         scrollpanelMessage.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollpanelMessage.setToolTipText("");
         scrollpanelMessage.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollpanelMessage.setMinimumSize(new java.awt.Dimension(740, 78));
+        scrollpanelMessage.setMinimumSize(new java.awt.Dimension(740, 105));
         scrollpanelMessage.setName(""); // NOI18N
-        scrollpanelMessage.setPreferredSize(new java.awt.Dimension(740, 78));
+        scrollpanelMessage.setPreferredSize(new java.awt.Dimension(740, 105));
         scrollpanelMessage.setRequestFocusEnabled(false);
 
         textareaMessages.setColumns(20);
@@ -237,22 +341,27 @@ public class Interface extends javax.swing.JFrame {
         panelStatusLayout.setVerticalGroup(
             panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelStatusLayout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addGroup(panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(labelFile, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelStatusFixed)
-                    .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelStatusLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(labelStatusFixed))
+                    .addGroup(panelStatusLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelFile, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelEditor.setMinimumSize(new java.awt.Dimension(740, 470));
-        panelEditor.setPreferredSize(new java.awt.Dimension(740, 470));
+        panelEditor.setMinimumSize(new java.awt.Dimension(660, 410));
+        panelEditor.setPreferredSize(new java.awt.Dimension(660, 410));
 
         scrollPanelEditor.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPanelEditor.setToolTipText("");
         scrollPanelEditor.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanelEditor.setMinimumSize(new java.awt.Dimension(720, 450));
+        scrollPanelEditor.setPreferredSize(new java.awt.Dimension(720, 450));
 
         textareaEditor.setColumns(20);
         textareaEditor.setRows(5);
@@ -265,7 +374,7 @@ public class Interface extends javax.swing.JFrame {
             panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
             .addGroup(panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE))
+                .addComponent(scrollPanelEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 700, Short.MAX_VALUE))
         );
         panelEditorLayout.setVerticalGroup(
             panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +382,7 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditorLayout.createSequentialGroup()
                     .addGap(0, 0, 0)
-                    .addComponent(scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)))
+                    .addComponent(scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -284,8 +393,8 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollpanelMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(scrollpanelMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 660, Short.MAX_VALUE)
+                    .addComponent(panelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 660, Short.MAX_VALUE)
                     .addComponent(panelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -294,13 +403,13 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelButton, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                    .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 552, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scrollpanelMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(panelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, 0))
         );
 
@@ -309,75 +418,15 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        JFileChooser JFCfile = new JFileChooser(lastPath); 
-        int selectedOpt = JFCfile.showOpenDialog(null);
-        
-        if(selectedOpt == JFileChooser.APPROVE_OPTION){
-            File file = JFCfile.getSelectedFile();
-            if(file.exists()){
-                textareaMessages.setText("");
-                textareaEditor.setText("");
-                labelFile.setText(file.getAbsolutePath());
-                lastPath = file.getAbsolutePath();
-                currentFile = file;
-                try {
-                    BufferedReader bfr = new BufferedReader(new FileReader(file));
-                    String line = bfr.readLine(); 
-                    while (line != null){
-                          textareaEditor.append(line + "\n");
-                          line = bfr.readLine();
-                     }
-                  labelStatus.setText("Not modified");  
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "File not found");
-            }
-        }
-       textareaEditor.requestFocus(); 
+        //this.openFile();
     }//GEN-LAST:event_btnOpenActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        currentFile = null;
-        textareaEditor.setText("");
-        textareaMessages.setText("");
-        textareaEditor.requestFocus();
-        labelFile.setText("New file");
-        labelStatus.setText("Not modified");
+        this.newFile();
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        JFileChooser JFCFile = new JFileChooser(lastPath);
-        if(currentFile != null){
-            JFCFile.setSelectedFile(currentFile);
-        }
-        if(JFCFile.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
-            File file = JFCFile.getSelectedFile();
-            boolean wantSave = true;
-            if(file.exists() && currentFile == null){
-                wantSave = JOptionPane.showConfirmDialog(null, "File already exists, want to replace?") == JOptionPane.OK_OPTION;
-            }
-            if(wantSave){
-                try {
-                   String lineSeparator = System.getProperty("line.separator");
-                   BufferedWriter bfw = new BufferedWriter(new FileWriter(file));
-                   String content [] = textareaEditor.getText().split("\n");
-                   for(int i = 0; i < content.length; i++) {
-                          bfw.write(content[i] + lineSeparator); 
-                   }
-                   currentFile = file;
-                   lastPath = file.getAbsolutePath();
-                   labelFile.setText(lastPath);
-                   labelStatus.setText("Not modified");
-                   bfw.close();
-               } catch (IOException ex) {
-                   Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-               }   
-            }
-        }
+        this.saveFile();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
@@ -393,8 +442,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCutActionPerformed
 
     private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
-        textareaMessages.setText("");
-        textareaMessages.setText("Aluno: Bruno Henrique Freiberger");
+        this.showMessageInfo();
     }//GEN-LAST:event_btnAboutActionPerformed
 
     /**
