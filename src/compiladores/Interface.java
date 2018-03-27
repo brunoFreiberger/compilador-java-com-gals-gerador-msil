@@ -56,6 +56,8 @@ public class Interface extends javax.swing.JFrame {
                         newFile();
                     } else if(e.getKeyCode() == KeyEvent.VK_F1) {
                         showMessageInfo();
+                    } else if(e.getKeyCode() == KeyEvent.VK_F9) {
+                        compile();
                     }
                 }
                 return false;
@@ -160,6 +162,11 @@ public class Interface extends javax.swing.JFrame {
     private void showMessageInfo() {
         textareaMessages.setText("");
         textareaMessages.setText("Aluno: Bruno Henrique Freiberger");
+    }
+    
+    private void compile() {
+        textareaMessages.setText("");
+        textareaMessages.setText("Compilação de programas ainda não foi implementada");
     }
 
     /**
