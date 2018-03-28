@@ -201,9 +201,9 @@ public class Interface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Compiler");
         setMaximumSize(new java.awt.Dimension(32767, 32767));
-        setMinimumSize(new java.awt.Dimension(900, 620));
-        setPreferredSize(new java.awt.Dimension(900, 620));
-        setSize(new java.awt.Dimension(900, 640));
+        setMinimumSize(new java.awt.Dimension(900, 650));
+        setPreferredSize(new java.awt.Dimension(900, 650));
+        setSize(new java.awt.Dimension(900, 650));
 
         panelButton.setMinimumSize(new java.awt.Dimension(145, 590));
         panelButton.setPreferredSize(new java.awt.Dimension(145, 590));
@@ -313,8 +313,10 @@ public class Interface extends javax.swing.JFrame {
         scrollpanelMessage.setPreferredSize(new java.awt.Dimension(740, 105));
         scrollpanelMessage.setRequestFocusEnabled(false);
 
+        textareaMessages.setEditable(false);
         textareaMessages.setColumns(20);
         textareaMessages.setRows(5);
+        textareaMessages.setPreferredSize(null);
         scrollpanelMessage.setViewportView(textareaMessages);
 
         panelStatus.setMinimumSize(new java.awt.Dimension(900, 25));
@@ -361,35 +363,33 @@ public class Interface extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelEditor.setAutoscrolls(true);
+        panelEditor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         panelEditor.setMinimumSize(new java.awt.Dimension(660, 410));
         panelEditor.setPreferredSize(new java.awt.Dimension(660, 410));
 
         scrollPanelEditor.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPanelEditor.setToolTipText("");
         scrollPanelEditor.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPanelEditor.setAutoscrolls(true);
         scrollPanelEditor.setMinimumSize(new java.awt.Dimension(720, 450));
         scrollPanelEditor.setPreferredSize(new java.awt.Dimension(720, 450));
 
         textareaEditor.setColumns(20);
         textareaEditor.setRows(5);
-        textareaEditor.setPreferredSize(new java.awt.Dimension(150, 94));
+        textareaEditor.setMinimumSize(new java.awt.Dimension(720, 430));
+        textareaEditor.setPreferredSize(null);
         scrollPanelEditor.setViewportView(textareaEditor);
 
         javax.swing.GroupLayout panelEditorLayout = new javax.swing.GroupLayout(panelEditor);
         panelEditor.setLayout(panelEditorLayout);
         panelEditorLayout.setHorizontalGroup(
             panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addGroup(panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(scrollPanelEditor, javax.swing.GroupLayout.PREFERRED_SIZE, 700, Short.MAX_VALUE))
+            .addComponent(scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelEditorLayout.setVerticalGroup(
             panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addGroup(panelEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditorLayout.createSequentialGroup()
-                    .addGap(0, 0, 0)
-                    .addComponent(scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(scrollPanelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -400,9 +400,9 @@ public class Interface extends javax.swing.JFrame {
                 .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollpanelMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 660, Short.MAX_VALUE)
-                    .addComponent(panelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 660, Short.MAX_VALUE)
-                    .addComponent(panelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(scrollpanelMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 745, Short.MAX_VALUE)
+                    .addComponent(panelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -410,9 +410,9 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 552, Short.MAX_VALUE)
+                    .addComponent(panelButton, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelEditor, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scrollpanelMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
