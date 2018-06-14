@@ -5,11 +5,11 @@
  */
 package compiladores.controller;
 
-import compiladores.lexico.LexicalError;
-import compiladores.lexico.Lexico;
-import compiladores.lexico.Token;
-import java.util.ArrayList;
-import java.util.List;
+import compiladores.analises.AnalysisError;
+import compiladores.analises.LexicalError;
+import compiladores.analises.Lexico;
+import compiladores.analises.Semantico;
+import compiladores.analises.Sintatico;
 
 /**
  *
@@ -25,14 +25,9 @@ public class Controlador {
         
     }
     
-    public Token[] lexicalVerification(String str) throws LexicalError {
-        Lexico lexico = new Lexico(str);
-        List<Token> tokens = new ArrayList<>();
-        Token token = null;
-        while ((token = lexico.nextToken()) != null) {
-            tokens.add(token);
-        }
-        return tokens.toArray(new Token[tokens.size()]);
+    public void compile(String str) throws AnalysisError {
+        Sintatico sintatico = new Sintatico();
+        sintatico.parse(new Lexico(str), new Semantico());
     }
     
 }

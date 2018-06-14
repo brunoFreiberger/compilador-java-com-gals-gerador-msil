@@ -1,4 +1,4 @@
-package compiladores.lexico;
+package compiladores.commom;
 
 public class Token
 {
@@ -32,7 +32,7 @@ public class Token
     public final String getTokenClass() {
         String name = null;
         
-        if (id >= Constants.t_TOKEN_25 && id <= Constants.t_TOKEN_42) {
+        if (id >= Constants.t_TOKEN_27 && id <= Constants.t_TOKEN_44) {
             name = SIMBOLO_ESPECIAL;
         }
         

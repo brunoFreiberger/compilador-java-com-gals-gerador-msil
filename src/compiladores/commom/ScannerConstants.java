@@ -1,4 +1,4 @@
-package compiladores.lexico;
+package compiladores.commom;
 
 public interface ScannerConstants
 {
@@ -1524,18 +1524,18 @@ public interface ScannerConstants
         {255, 24}
     };
 
-    int[] TOKEN_STATE = {-2,  0, 33, -1, -1, 26, 27, 41, 39, 30, 40, 42,  3,  3, 25, 35, 28, 37,  2, -1, 34,  5, -1, 31, -2,  0, -1, 29, 36, 38,  2, 32, -2, -2,  4,  2, -2,  0 };
+    int[] TOKEN_STATE = {-2,  0, 35, -1, -1, 28, 29, 43, 41, 32, 42, 44,  3,  3, 27, 37, 30, 39,  2, -1, 36,  5, -1, 33, -2,  0, -1, 31, 38, 40,  2, 34, -2, -2,  4,  2, -2,  0 };
 
     int[] SPECIAL_CASES_INDEXES =
-        { 0, 0, 0, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19 };
+        { 0, 0, 0, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21 };
 
     String[] SPECIAL_CASES_KEYS =
-        {  "BOOL", "CONST", "DEF", "END", "EXECUTE", "FALSE", "FLOAT", "GET", "IFFALSE", "IFTRUE", "INPUT", "INT", "PRINT", "PRINTLN", "SET", "STR", "TRUE", "TYPES", "VAR" };
+        {  "BOOL", "CONST", "DEF", "END", "EXECUTE", "FALSE", "FLOAT", "GET", "IFFALSE", "IFTRUE", "INPUT", "INT", "PRINT", "PRINTLN", "SET", "STR", "TRUE", "TYPES", "VAR", "WHILEFALSE", "WHILETRUE" };
 
     int[] SPECIAL_CASES_VALUES =
-        {  6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 };
+        {  6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25 };
 
-    String[] SCANNER_ERROR =
+ String[] SCANNER_ERROR =
     {
         ERRO_SIMBOLO_INVALIDO,
         "",

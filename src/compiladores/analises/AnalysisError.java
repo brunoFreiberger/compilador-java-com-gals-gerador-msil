@@ -1,4 +1,4 @@
-package compiladores.lexico;
+package compiladores.analises;
 
 public class AnalysisError extends Exception
 {

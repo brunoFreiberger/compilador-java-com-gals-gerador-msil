@@ -5,13 +5,11 @@
  */
 package compiladores.screen;
 
+import compiladores.analises.AnalysisError;
 import compiladores.controller.Controlador;
-import compiladores.lexico.LexicalError;
-import compiladores.lexico.Token;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -177,21 +174,12 @@ public class Interface extends javax.swing.JFrame {
     private void compile() {
         if(!textareaEditor.getText().trim().isEmpty()) {
             try {
-                Token[] tokens = this.controlador.lexicalVerification(textareaEditor.getText());
-                StringBuilder strB = new StringBuilder();
-                String show = "%-20s%-40s%s\n";
-                strB.append(String.format(show, "linha", "classe", "lexema"));
-                for(int i = 0; i < tokens.length; i++){
-                    Token token = tokens[i];
-                    strB.append(String.format(show, token.getLine(), token.getTokenClass(), token.getLexeme()));
-                }
-                strB.append("\nPrograma compilado com sucesso");
+                this.controlador.compile(textareaEditor.getText());
                 this.clearMessageArea();
-                this.textareaMessages.setText(strB.toString());
-            } catch (LexicalError le) {
-                this.textareaMessages.setText("Erro na linha " + le.getPosition() + ": " + le.getMessage());
+                this.textareaMessages.setText("\nPrograma compilado com sucesso");
+            } catch (AnalysisError ae) {
+                this.textareaMessages.setText("Erro na linha " + ae.getPosition() + ": " + ae.getMessage());
             }
-            
         }
     }
 

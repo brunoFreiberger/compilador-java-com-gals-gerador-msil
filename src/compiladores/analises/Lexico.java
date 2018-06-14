@@ -1,4 +1,8 @@
-package compiladores.lexico;
+package compiladores.analises;
+
+import compiladores.commom.Constants;
+import compiladores.commom.ScannerConstants;
+import compiladores.commom.Token;
 
 public class Lexico implements Constants
 {
@@ -43,10 +47,10 @@ public class Lexico implements Constants
         if (endState < 0 || (endState != state && tokenForState(lastState) == -2))   {
             String errorMessage = SCANNER_ERROR[lastState];
             
-            if(errorMessage.equals(Constants.ERRO_SIMBOLO_INVALIDO)){
+            if(errorMessage.equals(ScannerConstants.ERRO_SIMBOLO_INVALIDO)){
                 errorMessage = this.input.charAt(this.position - 1) + " " + errorMessage;
-            } else if(errorMessage.equals(Constants.ERRO_BLOCO_COMENTARIO_INVALIDO)) {
-                this.position = this.input.substring(0, this.position).lastIndexOf("/*");
+            } else if(errorMessage.equals(ScannerConstants.ERRO_BLOCO_COMENTARIO_INVALIDO)) {
+                this.position = this.input.substring(0, this.position).lastIndexOf("/*") + 1;
             }
             throw new LexicalError(errorMessage, getLine());
         }
@@ -125,7 +129,7 @@ public class Lexico implements Constants
     }
     
     private int getLine() {
-        String subsAux = this.input.substring(0, position);
+        String subsAux = this.input.substring(0, position-1);
         int line = 1;
         for(int i = 0; i < position; i++){
             char next = subsAux.charAt(i);
