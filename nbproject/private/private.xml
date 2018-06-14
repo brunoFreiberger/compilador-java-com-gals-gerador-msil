@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/Interface.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/Compiladores.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/NumberedBorder.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/lexico/ScannerConstants.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/lexico/Lexico.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/lexico/Constants.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/lexico/AnalysisError.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/screen/NumberedBorder.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/screen/Interface.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/controller/Controlador.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/lexico/Token.java</file>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/lexico/LexicalError.java</file>
         </group>
     </open-files>
 </project-private>

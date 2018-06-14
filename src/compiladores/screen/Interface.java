@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package compiladores;
+package compiladores.screen;
 
+import compiladores.controller.Controlador;
+import compiladores.lexico.LexicalError;
+import compiladores.lexico.Token;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -16,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -31,6 +35,7 @@ public class Interface extends javax.swing.JFrame {
     
     File currentFile = null;
     String lastPath = "";
+    Controlador controlador = null;
 
     /**
      * Creates new form Interface
@@ -41,6 +46,7 @@ public class Interface extends javax.swing.JFrame {
         this.labelFile.setText("New file");
         this.labelStatus.setText("Not modified");
         this.initKeyboardDetect();
+        controlador = new Controlador();
     }
     
     public void initKeyboardDetect(){
@@ -159,14 +165,34 @@ public class Interface extends javax.swing.JFrame {
         }
     }
     
+    private void clearMessageArea() {
+        this.textareaMessages.setText("");
+    }
+    
     private void showMessageInfo() {
-        textareaMessages.setText("");
+        this.clearMessageArea();
         textareaMessages.setText("Aluno: Bruno Henrique Freiberger");
     }
     
     private void compile() {
-        textareaMessages.setText("");
-        textareaMessages.setText("Compilação de programas ainda não foi implementada");
+        if(!textareaEditor.getText().trim().isEmpty()) {
+            try {
+                Token[] tokens = this.controlador.lexicalVerification(textareaEditor.getText());
+                StringBuilder strB = new StringBuilder();
+                String show = "%-20s%-40s%s\n";
+                strB.append(String.format(show, "linha", "classe", "lexema"));
+                for(int i = 0; i < tokens.length; i++){
+                    Token token = tokens[i];
+                    strB.append(String.format(show, token.getLine(), token.getTokenClass(), token.getLexeme()));
+                }
+                strB.append("\nPrograma compilado com sucesso");
+                this.clearMessageArea();
+                this.textareaMessages.setText(strB.toString());
+            } catch (LexicalError le) {
+                this.textareaMessages.setText("Erro na linha " + le.getPosition() + ": " + le.getMessage());
+            }
+            
+        }
     }
 
     /**
@@ -200,9 +226,7 @@ public class Interface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Compiler");
-        setMaximumSize(new java.awt.Dimension(32767, 32767));
         setMinimumSize(new java.awt.Dimension(900, 650));
-        setPreferredSize(new java.awt.Dimension(900, 650));
         setSize(new java.awt.Dimension(900, 650));
 
         panelButton.setMinimumSize(new java.awt.Dimension(145, 590));
@@ -262,6 +286,11 @@ public class Interface extends javax.swing.JFrame {
 
         btnCompile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/compiladores/icons/build.png"))); // NOI18N
         btnCompile.setText("Compile [F9]");
+        btnCompile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompileActionPerformed(evt);
+            }
+        });
 
         btnAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/compiladores/icons/about.png"))); // NOI18N
         btnAbout.setText("About [F1]");
@@ -425,7 +454,7 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        //this.openFile();
+        this.openFile();
     }//GEN-LAST:event_btnOpenActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -451,6 +480,10 @@ public class Interface extends javax.swing.JFrame {
     private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
         this.showMessageInfo();
     }//GEN-LAST:event_btnAboutActionPerformed
+
+    private void btnCompileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompileActionPerformed
+        this.compile();
+    }//GEN-LAST:event_btnCompileActionPerformed
 
     /**
      * @param args the command line arguments

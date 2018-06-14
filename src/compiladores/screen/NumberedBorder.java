@@ -1,4 +1,4 @@
-package compiladores;
+package compiladores.screen;
 
 import java.awt.Color;
 import java.awt.Component;

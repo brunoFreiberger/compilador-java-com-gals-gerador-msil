@@ -5,6 +5,8 @@
  */
 package compiladores;
 
+import compiladores.screen.Interface;
+
 /**
  *
  * @author Bruno Henrique
