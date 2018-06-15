@@ -235,7 +235,7 @@ public interface ParserConstants
         "esperado identificador )", //"<listaCampos1> inválido",
         "esperado identificador", //"<campo> inválido",
         "esperado identificador, consts, execute, var", //"<repTipo> inválido",
-        "esperado consts", //"<definicaoConstantes> inválido",
+        "esperado consts, execute, var ", //"<definicaoConstantes> inválido",
         "esperado consts, execute, var", //"<definicaoConstantesOpcional> inválido",
         "esperado identificador", //"<listaIdentificadores> inválido",
         "esperado :, ), =, ,", //"<listaIdentificadores1> inválido",
