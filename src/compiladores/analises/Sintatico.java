@@ -63,20 +63,20 @@ public class Sintatico implements Constants
                 if (currentToken.getId() == DOLLAR)
                     throw new SyntaticError(PARSER_ERROR[DOLLAR], currentToken.getPosition());
                 else
-                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getPosition());    
+                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getLine());    
                    
             }
         }
         else if (isNonTerminal(x))
         {
-            if (pushProduction(x, a))
+            if (pushProduction(x, a)) {
                 return false;
-            else
+            } else {
                 if (currentToken.getId() == DOLLAR) 
                     throw new SyntaticError(PARSER_ERROR[DOLLAR], currentToken.getPosition());
                 else 
-                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getPosition());    
-                 
+                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getLine());   
+            }    
         }
         else // isSemanticAction(x)
         {

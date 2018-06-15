@@ -129,7 +129,7 @@ public class Lexico implements Constants
     }
     
     private int getLine() {
-        String subsAux = this.input.substring(0, position-1);
+        String subsAux = this.input.substring(0, position);
         int line = 1;
         for(int i = 0; i < position; i++){
             char next = subsAux.charAt(i);

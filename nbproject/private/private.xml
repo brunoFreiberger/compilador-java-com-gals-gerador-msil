@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/commom/ParserConstants.java</file>
             <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/analises/Lexico.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/analises/LexicalError.java</file>
             <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/commom/ScannerConstants.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/screen/Interface.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/Compiladores.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/commom/Token.java</file>
             <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/commom/Constants.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/controller/Controlador.java</file>
-            <file>file:/C:/Users/Bruno%20Henrique/Documents/NetBeansProjects/Compiladores/src/compiladores/analises/Sintatico.java</file>
         </group>
     </open-files>
 </project-private>

@@ -176,7 +176,7 @@ public class Interface extends javax.swing.JFrame {
             try {
                 this.controlador.compile(textareaEditor.getText());
                 this.clearMessageArea();
-                this.textareaMessages.setText("\nPrograma compilado com sucesso");
+                this.textareaMessages.setText("Programa compilado com sucesso");
             } catch (AnalysisError ae) {
                 this.textareaMessages.setText("Erro na linha " + ae.getPosition() + ": " + ae.getMessage());
             }
