@@ -154,6 +154,7 @@ public class Interface extends javax.swing.JFrame {
                    lastPath = file.getAbsolutePath();
                    labelFile.setText(lastPath);
                    labelStatus.setText("Not modified");
+                   this.clearMessageArea();
                    bfw.close();
                } catch (IOException ex) {
                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);

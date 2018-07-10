@@ -1530,7 +1530,7 @@ public interface ScannerConstants
         { 0, 0, 0, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21 };
 
     String[] SPECIAL_CASES_KEYS =
-        {  "BOOL", "CONST", "DEF", "END", "EXECUTE", "FALSE", "FLOAT", "GET", "IFFALSE", "IFTRUE", "INPUT", "INT", "PRINT", "PRINTLN", "SET", "STR", "TRUE", "TYPES", "VAR", "WHILEFALSE", "WHILETRUE" };
+        {  "BOOL", "CONSTS", "DEF", "END", "EXECUTE", "FALSE", "FLOAT", "GET", "IFFALSE", "IFTRUE", "INPUT", "INT", "PRINT", "PRINTLN", "SET", "STR", "TRUE", "TYPES", "VAR", "WHILEFALSE", "WHILETRUE" };
 
     int[] SPECIAL_CASES_VALUES =
         {  6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 25 };
