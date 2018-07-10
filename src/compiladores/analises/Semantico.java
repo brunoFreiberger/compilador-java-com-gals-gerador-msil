@@ -152,7 +152,7 @@ public class Semantico implements Constants {
     private void action5() {
         pilha_tipos.push(Tipos.INT);
         codigo.append("\t\tldc.i8 ").append(currentToken.getLexeme()).append("\n");
-        // TODO
+        codigo.append("\t\tconv.r8\n");
     }
 
     private void action6() {
@@ -167,8 +167,10 @@ public class Semantico implements Constants {
     private void action8() throws SemanticError {
         Tipos tipo = verificaTiposOperacaoAritmeticaUnaria();
         codigo.append("\t\tldc.i8 -1\n");
+        if (Tipos.INT.equals(tipo)) {
+            codigo.append("\t\tconv.r8\n");
+        }
         codigo.append("\t\tmul\n");
-        // TODO
     }
 
     private void action9() {
@@ -178,7 +180,7 @@ public class Semantico implements Constants {
     private void action10() throws SemanticError {
         Tipos tipo1 = pilha_tipos.pop();
         Tipos tipo2 = pilha_tipos.pop();
-        if (tipo1 == tipo2) { // TODO
+        if (this.verificaTiposValidos(tipo1, tipo2)) { // TODO
             pilha_tipos.push(Tipos.BOOL);
         } else {
             throw new SemanticError("Tipos incompatíveis em operação relacional", currentToken.getPosition());
@@ -318,7 +320,10 @@ public class Semantico implements Constants {
         codigo.append("\t\tldloc ");
         codigo.append(simbolo.getIdentificador().getNome());
         codigo.append("\n");
-        // TODO
+        
+        if (Tipos.INT.equals(simbolo.getIdentificador().getTipo())) {
+            codigo.append("\t\tconv.r8\n");
+        }
     }
 
     private void action26() throws SemanticError {
@@ -333,7 +338,9 @@ public class Semantico implements Constants {
                 throw new SemanticError("Tipos incompatíveis em atribuição", currentToken.getPosition());
         }
         
-        // TODO
+        if (Tipos.INT.equals(simbolo.getIdentificador().getTipo())) {
+            codigo.append("\t\tconv.r8\n");
+        }
         
         codigo.append("\t\tstloc ");
         codigo.append(simbolo.getIdentificador().getNome());
@@ -383,6 +390,10 @@ public class Semantico implements Constants {
 
     private boolean tipoValido(Tipos tipo) {
         return tipo != Tipos.STRING && tipo != Tipos.BOOL;
+    }
+    
+    private boolean verificaTiposValidos(Tipos tipo1, Tipos tipo2) {
+        return false;
     }
 
 }
