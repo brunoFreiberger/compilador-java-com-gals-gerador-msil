@@ -25,9 +25,9 @@ public class Controlador {
         
     }
     
-    public void compile(String str) throws AnalysisError {
+    public void compile(String str, String fileName) throws AnalysisError {
         Sintatico sintatico = new Sintatico();
-        // TODO
+        Semantico semantico = new Semantico(fileName);
         sintatico.parse(new Lexico(str), new Semantico(null));
     }
     

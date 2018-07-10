@@ -20,11 +20,11 @@ public class Semantico implements Constants {
     private Stack<String> pilha_rotulos;
     private TabelaSimbolos tabela_simbolos;
     private Token currentToken;
-    private String file;
+    private String fileName;
     private Tipos tipoAux;
 
-    public Semantico(String file) {
-        this.file = file;
+    public Semantico(String fileName) {
+        this.fileName = fileName;
     }
 
     public void executeAction(int action, Token token) throws SemanticError {
@@ -227,8 +227,8 @@ public class Semantico implements Constants {
 
     private void action15() {
         codigo.append(".assembly extern mscorlib {}\n");
-        codigo.append(".assembly ").append(file).append("{}\n");
-        codigo.append(".module ").append(file).append(".exe\n\n");
+        codigo.append(".assembly ").append(fileName).append("{}\n");
+        codigo.append(".module ").append(fileName).append(".exe\n\n");
         codigo.append(".class public _UNICA{\n\n");
         codigo.append(".method static public void _principal() {\n");
         codigo.append("\t.entrypoint\n");
@@ -285,19 +285,19 @@ public class Semantico implements Constants {
     private void action24() throws SemanticError {
         Collections.reverse(lista_de_identificadores);
         for (Identificador id : lista_de_identificadores) {
-            if (this.tabela_simbolos.getSimbolos().containsKey(id.getNome())) {
-                throw new SemanticError("Identificador " + id.getNome() + " já declarado", this.currentToken.getPosition());
+            if (!this.tabela_simbolos.getSimbolos().containsKey(id.getNome())) {
+                throw new SemanticError("Identificador " + id.getNome() + " não declarado", this.currentToken.getPosition());
             }
             Simbolo simbolo = this.tabela_simbolos.getSimbolos().get(id.getNome());
             codigo.append("\t\tcall string [mscorlib]System.Console::ReadLine()");
             codigo.append("\n");
             switch (simbolo.getIdentificador().getTipo()) {
-                case INT:
-                    codigo.append("\t\tcall int64 [mscorlib]System.Int64::Parse(string)");
-                    codigo.append("\n");
-                    break;
                 case REAL:
                     codigo.append("\t\tcall float64 [mscorlib]System.Double::Parse(string)");
+                    codigo.append("\n");
+                    break;
+                case INT:
+                    codigo.append("\t\tcall int64 [mscorlib]System.Int64::Parse(string)");
                     codigo.append("\n");
                     break;
             }
@@ -309,11 +309,11 @@ public class Semantico implements Constants {
     }
 
     private void action25() throws SemanticError {
-        Identificador id = lista_de_identificadores.pop();
-        if (this.tabela_simbolos.getSimbolos().containsKey(id.getNome())) {
-            throw new SemanticError("Identificador " + id.getNome() + " já declarado", this.currentToken.getPosition());
+        String id = this.currentToken.getLexeme();
+        if (!this.tabela_simbolos.getSimbolos().containsKey(id)) {
+            throw new SemanticError("Identificador " + id + " não declarado", this.currentToken.getPosition());
         }
-        Simbolo simbolo = this.tabela_simbolos.getSimbolos().get(id.getNome());
+        Simbolo simbolo = this.tabela_simbolos.getSimbolos().get(id);
         pilha_tipos.push(simbolo.getIdentificador().getTipo());
         codigo.append("\t\tldloc ");
         codigo.append(simbolo.getIdentificador().getNome());
@@ -322,11 +322,11 @@ public class Semantico implements Constants {
     }
 
     private void action26() throws SemanticError {
-        Identificador identificador = lista_de_identificadores.pop();
-        if (this.tabela_simbolos.getSimbolos().containsKey(identificador.getNome())) {
-            throw new SemanticError("Identificador " + identificador.getNome() + " já declarado", this.currentToken.getPosition());
+        String id = this.currentToken.getLexeme();
+        if (!this.tabela_simbolos.getSimbolos().containsKey(id)) {
+            throw new SemanticError("Identificador " + id + " não declarado", this.currentToken.getPosition());
         }
-        Simbolo simbolo = this.tabela_simbolos.getSimbolos().get(identificador.getNome());
+        Simbolo simbolo = this.tabela_simbolos.getSimbolos().get(id);
         Tipos tipoId = simbolo.getIdentificador().getTipo();
         Tipos tipoExp = pilha_tipos.pop();
         if (tipoId != tipoExp) {

@@ -175,7 +175,8 @@ public class Interface extends javax.swing.JFrame {
     private void compile() {
         if(!textareaEditor.getText().trim().isEmpty()) {
             try {
-                this.controlador.compile(textareaEditor.getText());
+                String fileName = currentFile == null ? "" : currentFile.getName().substring(0, currentFile.getName().lastIndexOf('.'));
+                this.controlador.compile(textareaEditor.getText(), fileName);
                 this.clearMessageArea();
                 this.textareaMessages.setText("Programa compilado com sucesso");
             } catch (AnalysisError ae) {
