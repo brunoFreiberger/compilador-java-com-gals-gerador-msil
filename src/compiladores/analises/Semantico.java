@@ -6,8 +6,10 @@ import compiladores.commom.Tipos;
 import compiladores.commom.Token;
 import compiladores.commom.TabelaSimbolos;
 import compiladores.commom.TipoSimbolo;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import java.util.Stack;
 
@@ -392,8 +394,14 @@ public class Semantico implements Constants {
         return tipo != Tipos.STRING && tipo != Tipos.BOOL;
     }
     
+    // Definição da tabela de tipos da expressão
     private boolean verificaTiposValidos(Tipos tipo1, Tipos tipo2) {
-        return false;
+        List<String> operadores = Arrays.asList("!=", "<", "<=", ">", ">=", "=");
+        return 
+            (operadores.contains(this.operador) && (Tipos.INT.equals(tipo1) || Tipos.REAL.equals(tipo1) ) && (Tipos.INT.equals(tipo2) || Tipos.REAL.equals(tipo2)))
+        ||  (operadores.contains(this.operador) && (Tipos.STRING.equals(tipo1) && Tipos.STRING.equals(tipo2)))
+        ||  (this.operador.equals("!") && (Tipos.BOOL.equals(tipo1) && tipo2 == null))
+        ||  ((this.operador.equals("&&") || this.operador.equals("||")) && (Tipos.BOOL.equals(tipo1) && Tipos.BOOL.equals(tipo2)));
     }
 
 }
