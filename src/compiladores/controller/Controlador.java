@@ -6,7 +6,6 @@
 package compiladores.controller;
 
 import compiladores.analises.AnalysisError;
-import compiladores.analises.LexicalError;
 import compiladores.analises.Lexico;
 import compiladores.analises.Semantico;
 import compiladores.analises.Sintatico;
@@ -25,10 +24,11 @@ public class Controlador {
         
     }
     
-    public void compile(String str, String fileName) throws AnalysisError {
+    public String compile(String str, String fileName) throws AnalysisError {
         Sintatico sintatico = new Sintatico();
         Semantico semantico = new Semantico(fileName);
-        sintatico.parse(new Lexico(str), new Semantico(null));
+        sintatico.parse(new Lexico(str), semantico);
+        return semantico.getCodigo().toString();
     }
     
 }

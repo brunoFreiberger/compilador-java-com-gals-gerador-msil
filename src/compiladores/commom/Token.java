@@ -1,7 +1,7 @@
 package compiladores.commom;
 
-public class Token
-{
+public class Token {
+
     //classes
     public static final String PALAVRA_RESERVADA = "palavra reservada";
     public static final String IDENTIFICADOR = "identificador";
@@ -9,89 +9,54 @@ public class Token
     public static final String CONSTANTE_CHAR = "constante caractere";
     public static final String CONSTANTE_INTEIRA = "constante inteira";
     public static final String CONSTANTE_REAL = "constante real";
-    
+
     private int id;
     private String lexeme;
     private int position;
-    private int line;
 
-    public Token(int id, String lexeme, int position, int line) {
-        this.id = id;
-        this.lexeme = lexeme;
-        this.position = position;
-        this.line = line;
-    }
-    
-    public Token(int id, String lexeme, int position)
-    {
+    public Token(int id, String lexeme, int position) {
         this.id = id;
         this.lexeme = lexeme;
         this.position = position;
     }
-    
+
     public final String getTokenClass() {
-        String name = null;
-        
-        if (id >= Constants.t_TOKEN_27 && id <= Constants.t_TOKEN_44) {
-            name = SIMBOLO_ESPECIAL;
-        }
-        
-        if(id >= Constants.t_bool && id <= Constants.t_var){
-            name = PALAVRA_RESERVADA;
-        }
-        
-        switch(id) {
+        switch (id) {
             case Constants.t_identificador:
-                name = IDENTIFICADOR;
-                break;
+                return IDENTIFICADOR;
             case Constants.t_constanteChar:
-                name = CONSTANTE_CHAR;
-                break;
+                return CONSTANTE_CHAR;
             case Constants.t_constanteInteira:
-                name = CONSTANTE_INTEIRA;
-                break;
+                return CONSTANTE_INTEIRA;
             case Constants.t_constanteReal:
-                name = CONSTANTE_REAL;
-                break;            
+                return CONSTANTE_REAL;
         }
 
-        return name;
-        
+        if (id >= Constants.t_bool && id <= Constants.t_var) {
+            return PALAVRA_RESERVADA;
+        }
+
+        if (id >= Constants.t_TOKEN_27 && id <= Constants.t_TOKEN_44) {
+            return SIMBOLO_ESPECIAL;
+        }
+        throw new RuntimeException("Indentificador inválido");
     }
 
-    public final int getId()
-    {
+    public final int getId() {
         return id;
     }
 
-    public final String getLexeme()
-    {
+    public final String getLexeme() {
         return lexeme;
     }
 
-    public final int getPosition()
-    {
+    public final int getPosition() {
         return position;
     }
 
-    public String toString()
-    {
-        return id+" ( "+lexeme+" ) @ "+position;
-    };
-
-    /**
-     * @return the line
-     */
-    public int getLine() {
-        return line;
+    public String toString() {
+        return id + " ( " + lexeme + " ) @ " + position;
     }
+;
 
-    /**
-     * @param line the line to set
-     */
-    public void setLine(int line) {
-        this.line = line;
-    }
-    
-    
 }

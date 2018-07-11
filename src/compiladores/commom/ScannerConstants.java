@@ -3,7 +3,7 @@ package compiladores.commom;
 public interface ScannerConstants
 {
     
-    public static final String ERRO_CONSTANTE_CARACTERE_INVALIDA = "constante caractere inválida ou não finalizada";
+    public static final String ERRO_CONSTANTE_CARACTERE_INVALIDA = "constante str inválida ou não finalizada";
     
     public static final String ERRO_CONSTANTE_REAL_INVALIDA = "constante real inválida ou não finalizada";
 

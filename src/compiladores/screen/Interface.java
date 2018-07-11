@@ -29,10 +29,11 @@ import javax.swing.event.DocumentListener;
  * @author Bruno Henrique
  */
 public class Interface extends javax.swing.JFrame {
-    
+
     File currentFile = null;
     String lastPath = "";
     Controlador controlador = null;
+    String code = null;
 
     /**
      * Creates new form Interface
@@ -45,31 +46,31 @@ public class Interface extends javax.swing.JFrame {
         this.initKeyboardDetect();
         controlador = new Controlador();
     }
-    
-    public void initKeyboardDetect(){
+
+    public void initKeyboardDetect() {
         KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(final KeyEvent e) {
-                if(e.getID() == KeyEvent.KEY_PRESSED){
-                    if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
                         saveFile();
-                    } else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_O) {
+                    } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_O) {
                         openFile();
-                    } else if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
+                    } else if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_N) {
                         newFile();
-                    } else if(e.getKeyCode() == KeyEvent.VK_F1) {
+                    } else if (e.getKeyCode() == KeyEvent.VK_F1) {
                         showMessageInfo();
-                    } else if(e.getKeyCode() == KeyEvent.VK_F9) {
+                    } else if (e.getKeyCode() == KeyEvent.VK_F9) {
                         compile();
                     }
                 }
                 return false;
             }
         };
-        
+
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
     }
-    
+
     public void loadTextAreaEdit() {
         textareaEditor.setBorder(new NumberedBorder());
         textareaEditor.getDocument().addDocumentListener(new DocumentListener() {
@@ -89,14 +90,14 @@ public class Interface extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void openFile() {
-        JFileChooser jfcfile = new JFileChooser(lastPath); 
+        JFileChooser jfcfile = new JFileChooser(lastPath);
         int selectedOpt = jfcfile.showOpenDialog(null);
-        
-        if(selectedOpt == JFileChooser.APPROVE_OPTION){
+
+        if (selectedOpt == JFileChooser.APPROVE_OPTION) {
             File file = jfcfile.getSelectedFile();
-            if(file.exists()){
+            if (file.exists()) {
                 textareaMessages.setText("");
                 textareaEditor.setText("");
                 labelFile.setText(file.getAbsolutePath());
@@ -104,12 +105,12 @@ public class Interface extends javax.swing.JFrame {
                 currentFile = file;
                 try {
                     BufferedReader bfr = new BufferedReader(new FileReader(file));
-                    String line = bfr.readLine(); 
-                    while (line != null){
-                          textareaEditor.append(line + "\n");
-                          line = bfr.readLine();
-                     }
-                  labelStatus.setText("Not modified");  
+                    String line = bfr.readLine();
+                    while (line != null) {
+                        textareaEditor.append(line + "\n");
+                        line = bfr.readLine();
+                    }
+                    labelStatus.setText("Not modified");
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -119,9 +120,9 @@ public class Interface extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "File not found");
             }
         }
-       textareaEditor.requestFocus(); 
+        textareaEditor.requestFocus();
     }
-    
+
     private void newFile() {
         currentFile = null;
         textareaEditor.setText("");
@@ -130,58 +131,73 @@ public class Interface extends javax.swing.JFrame {
         labelFile.setText("New file");
         labelStatus.setText("Not modified");
     }
-    
+
     private void saveFile() {
         JFileChooser JFCFile = new JFileChooser(lastPath);
-        if(currentFile != null){
+        if (currentFile != null) {
             JFCFile.setSelectedFile(currentFile);
         }
-        if(JFCFile.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+        if (JFCFile.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = JFCFile.getSelectedFile();
             boolean wantSave = true;
-            if(file.exists() && currentFile == null){
+            if (file.exists() && currentFile == null) {
                 wantSave = JOptionPane.showConfirmDialog(null, "File already exists, want to replace?") == JOptionPane.OK_OPTION;
             }
-            if(wantSave){
+            if (wantSave) {
                 try {
-                   String lineSeparator = System.getProperty("line.separator");
-                   BufferedWriter bfw = new BufferedWriter(new FileWriter(file));
-                   String content [] = textareaEditor.getText().split("\n");
-                   for(int i = 0; i < content.length; i++) {
-                          bfw.write(content[i] + lineSeparator); 
-                   }
-                   currentFile = file;
-                   lastPath = file.getAbsolutePath();
-                   labelFile.setText(lastPath);
-                   labelStatus.setText("Not modified");
-                   this.clearMessageArea();
-                   bfw.close();
-               } catch (IOException ex) {
-                   Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-               }   
+                    String lineSeparator = System.getProperty("line.separator");
+                    BufferedWriter bfw = new BufferedWriter(new FileWriter(file));
+                    String content[] = textareaEditor.getText().split("\n");
+                    for (int i = 0; i < content.length; i++) {
+                        bfw.write(content[i] + lineSeparator);
+                    }
+                    currentFile = file;
+                    lastPath = file.getAbsolutePath();
+                    labelFile.setText(lastPath);
+                    labelStatus.setText("Not modified");
+                    this.clearMessageArea();
+                    bfw.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
-    
+
     private void clearMessageArea() {
         this.textareaMessages.setText("");
     }
-    
+
     private void showMessageInfo() {
         this.clearMessageArea();
         textareaMessages.setText("Aluno: Bruno Henrique Freiberger");
     }
-    
+
     private void compile() {
-        if(!textareaEditor.getText().trim().isEmpty()) {
+        if (!textareaEditor.getText().trim().isEmpty()) {
             try {
-                String fileName = currentFile == null ? "" : currentFile.getName().substring(0, currentFile.getName().lastIndexOf('.'));
-                this.controlador.compile(textareaEditor.getText(), fileName);
+                if (this.currentFile == null) {
+                    this.saveFile();
+                }
+                String fileName = currentFile.getName().substring(0, currentFile.getName().lastIndexOf('.'));
+                this.code = this.controlador.compile(textareaEditor.getText(), fileName);
                 this.clearMessageArea();
+                this.saveCodeCompiled();
                 this.textareaMessages.setText("Programa compilado com sucesso");
             } catch (AnalysisError ae) {
                 this.textareaMessages.setText("Erro na linha " + ae.getPosition() + ": " + ae.getMessage());
             }
+        }
+    }
+
+    private void saveCodeCompiled() {
+        try {
+            File compiled = new File(currentFile.getAbsolutePath().replace(".txt", ".il"));
+            BufferedWriter bfw = new BufferedWriter(new FileWriter(compiled));
+            bfw.write(this.code);
+            bfw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
