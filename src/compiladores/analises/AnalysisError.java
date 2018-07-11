@@ -10,12 +10,6 @@ public class AnalysisError extends Exception
         this.position = position;
     }
 
-    public AnalysisError(String msg)
-    {
-        super(msg);
-        this.position = -1;
-    }
-
     public int getPosition()
     {
         return position;

@@ -66,7 +66,7 @@ public class Lexico implements Constants
         {
             String lexeme = input.substring(start, end);
             token = lookupToken(token, lexeme);
-            return new Token(token, lexeme, start, this.getLine());
+            return new Token(token, lexeme, this.getLine());
         }
     }
     
@@ -129,9 +129,9 @@ public class Lexico implements Constants
     }
     
     private int getLine() {
-        String subsAux = this.input.substring(0, position);
+        String subsAux = this.input.substring(0, position-1);
         int line = 1;
-        for(int i = 0; i < position; i++){
+        for(int i = 0; i < position-1; i++){
             char next = subsAux.charAt(i);
             if(next == '\n'){
                 line++;

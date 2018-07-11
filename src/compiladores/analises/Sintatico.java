@@ -63,7 +63,7 @@ public class Sintatico implements Constants
                 if (currentToken.getId() == DOLLAR)
                     throw new SyntaticError(PARSER_ERROR[DOLLAR], currentToken.getPosition());
                 else
-                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getLine());    
+                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getPosition());    
                    
             }
         }
@@ -75,12 +75,13 @@ public class Sintatico implements Constants
                 if (currentToken.getId() == DOLLAR) 
                     throw new SyntaticError(PARSER_ERROR[DOLLAR], currentToken.getPosition());
                 else 
-                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getLine());   
+                    throw new SyntaticError("encontrado " + currentToken.getLexeme() + " " + PARSER_ERROR[x], currentToken.getPosition());   
             }    
         }
         else // isSemanticAction(x)
         {
-            semanticAnalyser.executeAction(x-FIRST_SEMANTIC_ACTION, previousToken);
+            if(semanticAnalyser != null)
+                semanticAnalyser.executeAction(x-FIRST_SEMANTIC_ACTION, previousToken);
             return false;
         }
     }
