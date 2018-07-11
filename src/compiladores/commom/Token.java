@@ -6,9 +6,9 @@ public class Token {
     public static final String PALAVRA_RESERVADA = "palavra reservada";
     public static final String IDENTIFICADOR = "identificador";
     public static final String SIMBOLO_ESPECIAL = "símbolo especial";
-    public static final String CONSTANTE_CHAR = "constante caractere";
-    public static final String CONSTANTE_INTEIRA = "constante inteira";
-    public static final String CONSTANTE_REAL = "constante real";
+    public static final String CONSTANTE_CHAR = "constante str";
+    public static final String CONSTANTE_INTEIRA = "constante int";
+    public static final String CONSTANTE_REAL = "constante float";
 
     private int id;
     private String lexeme;
