@@ -7,7 +7,6 @@ import compiladores.commom.Token;
 import compiladores.commom.TabelaSimbolos;
 import compiladores.commom.TipoSimbolo;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -131,6 +130,8 @@ public class Semantico implements Constants {
                 break;
         }
     }
+    
+    // Ações
 
     private void action1() throws SemanticError {
         this.verificaTiposOperacaoAritmeticaBinaria();
@@ -280,6 +281,10 @@ public class Semantico implements Constants {
             tipoAux = Tipos.INT;
         } else if (token.getLexeme().equalsIgnoreCase("float")) {
             tipoAux = Tipos.REAL;
+        } else if (token.getLexeme().equalsIgnoreCase("bool")) {
+            tipoAux = Tipos.BOOL;
+        } else if (token.getLexeme().equalsIgnoreCase("str")) {
+            tipoAux = Tipos.STRING;
         }
     }
 
@@ -288,7 +293,6 @@ public class Semantico implements Constants {
     }
 
     private void action23() throws SemanticError {
-
         codigo.append("\t.locals (");
         String codAux = null;
         for (Identificador id : lista_de_identificadores) {
@@ -389,20 +393,56 @@ public class Semantico implements Constants {
     }
 
     private void action28() {
+        String rotulo = this.getRotulo();
+        switch (token.getLexeme()) {
+            case "ifFalse":
+                pilha_rotulos.pop();
+                codigo.append("\tbrtrue ").append(rotulo).append("\n");
+                break;
+            case "ifTrue":
+                pilha_rotulos.pop();
+                codigo.append("\tbrfalse ").append(rotulo).append("\n");
+                break;
+            case "whileTrue":
+                codigo.append("\tbrfalse ").append(rotulo).append("\n");
+                break;
+            case "whileFalse":
+                codigo.append("\tbrtrue ").append(rotulo).append("\n");
+                break;
+        }
+        pilha_rotulos.push(rotulo);
     }
 
     private void action29() {
+        codigo.append("\t").append(pilha_rotulos.pop()).append(": \n");
     }
 
     private void action30() {
+        String rotulo = getRotulo();
+        codigo.append("\tbr ").append(rotulo).append("\n");
+        codigo.append("\t").append(pilha_rotulos.pop()).append(":\n");
+        pilha_rotulos.push(rotulo);
     }
 
     private void action31() {
+        String ultimo = pilha_rotulos.pop();
+        String penultimo = pilha_rotulos.pop();
+        codigo.append("\tbr ").append(penultimo).append("\n");
+        codigo.append("\t").append(ultimo).append(":\n");
     }
 
-    private void action32() {
+    private void action32() throws SemanticError {
+        for (Identificador id : lista_de_identificadores) {
+            if (tabela_simbolos.getSimbolos().containsKey(id.getNome())) {
+                throw new SemanticError(id + " já declarado", token.getPosition());
+            }
+        }
+        // TODO adicionar na tabela de simbolos
+        lista_de_identificadores.clear();
     }
-
+    
+    // Métodos auxiliares
+    
     private void verificaTiposOperacaoAritmeticaBinaria() throws SemanticError {
         Tipos tipo1 = pilha_tipos.pop();
         Tipos tipo2 = pilha_tipos.pop();
