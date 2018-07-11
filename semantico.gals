@@ -1,0 +1,226 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = LL
+#RegularDefinitions
+mai: [A-Z]
+min: [a-z]
+dig: [0-9]
+und: _
+letra: {mai}|{min}
+caract: {letra}|{dig}
+dig_b: [1-9]
+zero: [0]
+virg: ,
+aspas: \"
+cLinha: (/)(/)([^\n]*)
+cBloco: /\*([^\*/]*|((/)*|(\*)*)[^\*/]+)*\*/
+IGNORE: [\t\n\s]
+
+#Tokens
+identificador: {letra}({caract}*|({und}{caract}+)*)*{und}?
+constanteInteira: {zero}|({dig_b}+{zero}*)+
+constanteReal: ({zero}|({dig_b}+{zero}*)+){virg}{dig}+
+constanteChar : \"([^\n\\\"]|\\\\|\\\")*\"
+
+//palavras reservadas
+bool = identificador: "bool"
+consts = identificador: "consts"
+def = identificador: "def"
+end = identificador: "end"
+execute = identificador: "execute"
+false = identificador: "false"
+float = identificador: "float"
+get = identificador: "get"
+ifFalse = identificador: "ifFalse"
+ifTrue = identificador: "ifTrue"
+input = identificador: "input"
+int = identificador: "int"
+print = identificador: "print"
+println = identificador: "println"
+set = identificador: "set"
+str = identificador: "str"
+true = identificador: "true"
+types = identificador: "types"
+var = identificador: "var"
+whileTrue = identificador: "whileTrue"
+whileFalse = identificador: "whileFalse"
+
+//caract. especiais
+":"
+"("
+")"
+"="
+":="
+","
+"&&"
+"||"
+"!"
+"!="
+"<"
+"<="
+">"
+">="
+"+"
+"-"
+"*"
+"/"
+
+:{IGNORE}
+:!{cLinha}
+:!{cBloco}
+#NonTerminals
+<formaGeral>
+
+<definicaoTipos>
+<definicaoTiposOpcional>
+<ehTipo>
+<simples>
+<composto>
+<listaCampos>
+<listaCampos1>
+<campo>
+<repTipo>
+
+<definicaoConstantes>
+<definicaoConstantesOpcional>
+<listaIdentificadores>
+<listaIdentificadores1>
+<valor>
+<booleano>
+<repConst>
+
+<declaracaoVariaveis>
+<declaracaoVariaveisOpcional>
+<declaracaoVariaveisM>
+<declaracaoVariaveisM1>
+<declaracaoVariaveisAux>
+<tipo>
+
+<atribuicao>
+
+<manipulaTiposCompostos>
+
+<entrada>
+
+<saida>
+<escreve>
+<escreveAbaixo>
+<listaExpressoes>
+<listaExpressoes1>
+
+<selecao>
+<seVerdade>
+<seFalso>
+<seMultiplaVerificacao>
+
+<repeticao>
+<enquantoVerdade>
+<enquantoFalso>
+
+<listaComandos>
+<listaComandos1>
+<comando>
+<comando1>
+<comando2>
+
+<expressao>
+<expressaox>
+<elemento>
+<relacional>
+<relacional1>
+<operador_relacional>
+<aritmetica>
+<aritmeticax>
+<termo>
+<termox>
+<fator>
+<fator1>
+#Grammar
+// equipe: Bruno Henrique Freiberger
+
+//Forma geral
+<formaGeral> ::= #15 def <definicaoTiposOpcional> <definicaoConstantesOpcional> <declaracaoVariaveisOpcional>
+                 execute <listaComandos> #16 ;
+
+//Definição de tipos
+<definicaoTipos> ::= types identificador ":" <ehTipo> <repTipo> ;
+<definicaoTiposOpcional> ::= î | <definicaoTipos> ;
+<ehTipo> ::= <simples> | <composto> ;
+<simples> ::= int | float | str | bool ;
+<composto> ::= "(" <listaCampos> ")" ;
+<listaCampos> ::= <campo> <listaCampos1> ;
+<listaCampos1> ::= <listaCampos> | î ;
+<campo> ::= identificador ":" <simples> ;
+<repTipo> ::= identificador ":" <ehTipo> <repTipo> | î  ;
+
+//Definição de constantes
+<definicaoConstantes> ::= consts <listaIdentificadores> "=" <valor> #32 <repConst> ;
+<definicaoConstantesOpcional> ::= î | <definicaoConstantes> ;
+<listaIdentificadores> ::= identificador #22 <listaIdentificadores1> ;
+<listaIdentificadores1> ::= "," <listaIdentificadores> | î ;
+<valor> ::= constanteChar | constanteReal | constanteInteira | <booleano> ;
+<booleano> ::= true | false ;
+<repConst> ::= <listaIdentificadores> "=" <valor> #32 <repConst> | î ;
+
+//Declaração de variáveis
+<declaracaoVariaveis> ::= var <declaracaoVariaveisM> ;
+<declaracaoVariaveisOpcional> ::= î | <declaracaoVariaveis> ;
+<declaracaoVariaveisM> ::= <declaracaoVariaveisAux> <declaracaoVariaveisM1> ;
+<declaracaoVariaveisM1> ::= <declaracaoVariaveisM> | î ;
+<declaracaoVariaveisAux> ::= <listaIdentificadores> ":" <tipo> #21 #23 ;
+<tipo> ::= int | float | str | bool | identificador ;
+
+//Forma geral de atribuição
+<atribuicao> ::= ":=" <expressao> #26 ;
+
+//Forma geral de manipulação de tipos compostos"
+<manipulaTiposCompostos> ::= set "(" identificador "," <expressao> ")" ;
+
+//Forma geral do comando de entrada de dados
+<entrada> ::= input "(" <listaIdentificadores> #24 ")" ;
+
+//Forma geral do comando de saída de dados
+<saida> ::= <escreve> | <escreveAbaixo> ;
+<escreve> ::= print "(" <listaExpressoes> ")" ;
+<escreveAbaixo> ::= println "(" <listaExpressoes> ")" #17 ;
+<listaExpressoes> ::= <expressao> #14 <listaExpressoes1> ;
+<listaExpressoes1> ::= "," <listaExpressoes> | î;
+
+//Forma geral do comando de seleção
+<selecao> ::= <seVerdade> | <seFalso> ;
+<seVerdade> ::= ifTrue #28 ":" <listaComandos> <seMultiplaVerificacao> ;
+<seFalso> ::= ifFalse #28 ":" <listaComandos> end #29 ;
+<seMultiplaVerificacao> ::= #30 ifFalse ":" <listaComandos> end #29 | end #29 ;
+
+//Forma geral do comando de repetição
+<repeticao> ::= <enquantoVerdade> | <enquantoFalso> ;
+<enquantoVerdade> ::= whileTrue #28 ":" <listaComandos> end #31 ;
+<enquantoFalso> ::= whileFalse #28 ":" <listaComandos> end #31;
+
+//Lista de comandos
+<listaComandos> ::= <comando> <listaComandos1> ;
+<listaComandos1> ::= <listaComandos> | î ;
+<comando> ::= identificador #22 <comando1> | <entrada> | <saida> | #27 "(" <expressao> ")" <comando2>  ;
+<comando1> ::= <atribuicao> | <manipulaTiposCompostos> ;
+<comando2> ::= <selecao> | <repeticao> ;
+
+<expressao> ::= <elemento> <expressaox> ;
+<expressaox> ::= "&&" <elemento> #18 <expressaox> | "||" <elemento> #19 <expressaox> | î ;
+<elemento> ::= <relacional> | true #11 | false #12 | "!" <elemento> #13 ;
+<relacional> ::= <aritmetica> <relacional1> ;
+<relacional1> ::= <operador_relacional> #9 <aritmetica> #10 | î ;
+<operador_relacional> ::= "=" | "!=" | "<" | "<=" | ">" | ">=" ;
+<aritmetica> ::= <termo> <aritmeticax> ;
+<aritmeticax> ::= "+" <termo> #1 <aritmeticax> | "-" <termo> #2 <aritmeticax> | î;
+<termo> ::= <fator> <termox> ;
+<termox> ::= "*" <fator> #3 <termox> | "/" <fator> #4 <termox> | î ;
+<fator> ::= identificador #25 <fator1> | constanteInteira #5 | constanteReal #6 | constanteChar #20 | "(" <expressao> ")" | "+" <fator> #7 | "-" <fator> #8 ;
+<fator1> ::= get "(" identificador ")" | î ;
