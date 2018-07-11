@@ -18,7 +18,8 @@ public class TabelaSimbolos {
     
     private Map<String, Simbolo> simbolos = new HashMap<>();
     
-    public void adicionaSimbolo(Identificador identificador, Token token, TipoSimbolo tipo) throws SemanticError {
+    public void adicionaSimbolo(Identificador identificador, Token token, TipoSimbolo tipo, Tipos tipoId) throws SemanticError {
+        identificador.setTipo(tipoId);
         Simbolo simbolo = new Simbolo(identificador, tipo);
         this.simbolos.put(simbolo.getIdentificador().getNome(), simbolo);
     }
