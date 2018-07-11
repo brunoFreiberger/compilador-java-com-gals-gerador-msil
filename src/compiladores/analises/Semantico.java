@@ -7,6 +7,7 @@ import compiladores.commom.Token;
 import compiladores.commom.TabelaSimbolos;
 import compiladores.commom.TipoSimbolo;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
